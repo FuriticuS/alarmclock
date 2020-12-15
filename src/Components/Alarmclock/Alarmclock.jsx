@@ -11,7 +11,8 @@ class AlarmClock extends Component {
         this.state = {
             currentTime: '',
             time: '',
-            alarmTime: ''
+            alarmTime: '',
+            disabled: false
         };
     }
 
@@ -66,11 +67,27 @@ class AlarmClock extends Component {
         }
 
         else {
+            this.state.disabled = true;
             this.alarmMessage = "Ваш будильник установлен на " + this.state.alarmTime;
             if(this.state.currentTime === this.state.alarmTime) {
                 alert("Дзынь дзынь");
+                this.setState({
+                    alarmTime: '',
+                    disabled: false
+                })
             }
         }
+    }
+
+    stopAlarm = (e) => {
+        e.preventDefault();
+
+        const newTimeSec = '';
+
+        this.setState({
+            alarmTime: newTimeSec,
+            disabled: false
+        })
     }
 
     render() {
@@ -85,8 +102,16 @@ class AlarmClock extends Component {
                 <h2>{this.alarmMessage}</h2>
 
                 <form>
-                    <input type="number" onChange={this.setAlarmTime} min='1' max='120'/>
+                    <input
+                        type="number"
+                        onChange={this.setAlarmTime}
+                        min='1'
+                        max='120'
+                        disabled={this.state.disabled}
+                    />
                 </form>
+
+                <button onClick={this.stopAlarm}>Остановить</button>
             </div>
         );
     }
